@@ -7,6 +7,16 @@
  ****************************************************************/
 function getBookById(bookId, books) {
   // Your code goes here
+var bookindex
+let temp = books.map(function(item,index,array){
+if (item.id == bookId)
+{
+  bookindex =index
+  return item;
+}
+})
+return books[bookindex]
+
 }
 
 /**************************************************************
@@ -18,6 +28,15 @@ function getBookById(bookId, books) {
  ****************************************************************/
 function getAuthorByName(authorName, authors) {
   // Your code goes here
+  var authindex;
+  let temp = authors.map(function(item,index,array){
+    if (item.name.toLowerCase() == authorName.toLowerCase())
+    {
+      authindex =index
+      return item;
+    }
+    })
+    return authors[authindex]
 }
 
 /**************************************************************
@@ -28,6 +47,25 @@ function getAuthorByName(authorName, authors) {
  ****************************************************************/
 function bookCountsByAuthor(authors) {
   // Your code goes here
+  let soso = [];
+  let obob = {
+    author:"",
+    bookCount:0
+  }
+  let temp = authors.map(function(item,index,array){
+    
+      obob.author = item.name;
+      obob.bookCount = item.books.length;
+      soso.push(obob)
+       obob = {
+        author:"",
+        bookCount:0
+      
+      }
+      return 0
+    }
+    )
+    return soso;
 }
 
 /**************************************************************
@@ -39,6 +77,20 @@ function bookCountsByAuthor(authors) {
  ****************************************************************/
 function booksByColor(books) {
   const colors = {};
+  let bookt = []
+  books.forEach(element => {
+  if (!colors[element.color])
+  {
+    bookt.push(element.title)
+    colors[element.color]=bookt;
+    bookt=[]
+  }
+  else
+  {
+    colors[element.color].push(element.title)
+  }
+  }
+  )
 
   // Your code goes here
 
@@ -54,7 +106,26 @@ function booksByColor(books) {
  *    ["The Hitchhikers Guide", "The Meaning of Liff"]
  ****************************************************************/
 function titlesByAuthorName(authorName, authors, books) {
-  // Your code goes here
+  let booksList =[]
+  let booksId=[]
+  authors.forEach(element => {
+    if (element.name.toLowerCase() == authorName.toLowerCase()){
+      element.books.forEach(book => {
+        booksId.push(book)
+      });
+    }  
+  });
+  books.forEach(id1 => 
+    {
+      booksId.forEach(id2 =>
+         {
+        if (id1.id == id2)
+        {
+          booksList.push(id1.title)
+        }
+      });
+  });
+  return booksList
 }
 
 /**************************************************************
@@ -65,7 +136,18 @@ function titlesByAuthorName(authorName, authors, books) {
  * Note: assume there will never be a tie
  ****************************************************************/
 function mostProlificAuthor(authors) {
-  // Your code goes here
+let theTop ;
+let bestNowName = 0 ;
+let bestNowNum = 0;
+authors.forEach(x => {
+  if (x.books.length>bestNowNum)
+  {
+    bestNowName = x.name
+    bestNowNum = x.books.length
+  }
+  
+});
+return bestNowName
 }
 
 /**************************************************************
@@ -92,7 +174,27 @@ function mostProlificAuthor(authors) {
  * BONUS: REMOVE DUPLICATE BOOKS
  ****************************************************************/
 function relatedBooks(bookId, authors, books) {
-  // Your code goes here
+  let theAuthor = [];
+  let bookList=[];
+  books.forEach(book => {
+    if (book.id==bookId){
+      book.authors.forEach(auth => {
+        theAuthor.push(auth.name) 
+      });
+    }
+  });
+  books.forEach(book => {
+    theAuthor.forEach(name => {
+      book.authors.forEach(author => {
+        if (author.name == name){
+          bookList.push(book.title)
+        }
+      });
+      
+    });    
+  });
+  return bookList
+
 }
 
 /**************************************************************
@@ -102,7 +204,54 @@ function relatedBooks(bookId, authors, books) {
  *   co-authored the greatest number of books
  ****************************************************************/
 function friendliestAuthor(authors) {
-  // Your code goes here
+let dAuthors = [];
+let counter = 0 ;
+  authors.forEach(author1 => {
+    authors.forEach(author2 => {
+      author1.books.forEach(book1 => {
+        author2.books.forEach(book2 => {
+          if(book1==book2){
+            dAuthors.push(author2.name)
+          }
+
+
+
+
+
+        });
+      });
+    });
+    
+  });
+  let x = 0 ;
+  let y = 0;
+  let me = 0;
+  let temp ;
+  
+  dAuthors.forEach(a1 => {
+    me = 0
+    dAuthors.forEach(a2 => {
+      if (a2 == a1)
+      {
+        if (me == 0)
+        {
+          me++;
+        }
+        else 
+        {
+          x++
+        }
+      }
+    });
+  if (x > y)
+  {
+
+    y = x
+    temp = a1
+    x = 0
+  }
+});
+return temp 
 }
 
 module.exports = {
